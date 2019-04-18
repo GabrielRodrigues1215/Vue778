@@ -3,12 +3,15 @@
         <h2>As Informações de Usuário</h2>
         <p>Vários detalhes...</p>
         <p>Nome do Usuário: <strong>{{ inveterNome() }}</strong></p>
+        <p>Idade do Usuario <strong>{{ idade }}</strong></p>
         <button @click="reiniciarNome">Reiniciar Nome</button>
         <button @click="reiniciarFn()">Reiniciar Nome(callback)</button>
     </div>
 </template>
 
 <script>
+import barramento from '@/barramento'
+
 export default {
     props: {
         nome: {
@@ -20,7 +23,8 @@ export default {
 
             //}
         },
-        reiniciarFn: Function
+        reiniciarFn: Function,
+        idade: Number
     },
     methods: {
         inveterNome(){
@@ -31,6 +35,11 @@ export default {
             this.nome = 'Pedro Silva'
             this.$emit('nomeMudou', this.nome)
         }
+    },
+    created(){
+        barramento.quandoIdadeMudar(idade =>{
+            this.idade = idade
+        })
     }
     
 }
