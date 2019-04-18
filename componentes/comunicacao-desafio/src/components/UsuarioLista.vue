@@ -19,7 +19,10 @@
 
 <script>
 export default {
-    props: { usuarios: Array }
+    props: { usuarios: Array },
+    methods:{
+        
+    }
 }
 </script>
 
