@@ -1,22 +1,53 @@
 <template>
   <div id="app">
     <h1>Tarefas</h1>
+    <NewTask @taskAdded="addTask"/>
+
+    <TaskGrid :tasks="tasks" 
+	@taskDeleted="deleteTask" 
+	@taskStateChanged="toggleTaskState"/>
   </div>
 </template>
 
 <script>
-export default {};
+import TaskGrid from "./components/TaskGrid.vue";
+import NewTask from "./components/NewTask.vue";
+
+export default {
+  components: { TaskGrid, NewTask },
+  data() {
+    return {
+      tasks: []
+    };
+  },
+  methods: {
+    addTask(task) {
+      const sameName = t => t.name === task.name;
+      const reallyNew = this.tasks.filter(sameName).length == 0;
+      if (reallyNew) {
+        this.tasks.push({
+          name: task.name,
+          pending: task.pending || true
+        });
+      }
+    },
+    deleteTask(i) {
+      this.tasks.splice(i, 1);
+  },
+
+  toggleTaskState(i) {
+    this.tasks[i].pending = !this.tasks[i].pending;
+  }
+  }
+};
+
 </script>
 
 <style>
 body {
-  background: #403b4a; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #403b4a,
-    #e7e9bb
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #403b4a, #e7e9bb);
+  font-family: "Lato", sans-serif;
+  background: linear-gradient(to right, rgb(22, 34, 42), rgb(58, 96, 115));
+  color: #fff;
 }
 
 #app {
