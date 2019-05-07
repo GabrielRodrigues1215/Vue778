@@ -15,7 +15,7 @@
 			leave-active-class="animated shake">
 			<b-alert variant="info" show v-show="exibir">{{ msg }}</b-alert>
 		</transition> -->
-	<hr>
+	<!-- <hr>
 	<b-select v-model="tipoAnimacao" class="mb-4">
 		<option value="fade">Fade</option>
 		<option value="slide">Slide</option>
@@ -43,20 +43,33 @@
 		</transition>
 
 		<hr>
-		<b-button variant="primary" @click="componenteSelecionado = 'AlertaInfo'">Info</b-button>
-		<b-button variant="primary" @click="componenteSelecionado = 'AlertaAdvertencia'">Advertência</b-button>
+		<div class="mb-4">
+		<b-button variant="primary" class="mr-2" @click="componenteSelecionado = 'AlertaInfo'">Info</b-button>
+		<b-button variant="secondary" @click="componenteSelecionado = 'AlertaAdvertencia'">Advertência</b-button>
+		</div>
+
+		<transition name="fade" mode="out-in">
 		<component :is="componenteSelecionado"></component>
+		</transition> -->
+		<hr>
+			<b-button @click="adicionarAluno" class="mb-4">adicionarAluno</b-button>
+			<transition-group name="slide" tag="div">
+				<b-list-group v-for="(aluno, i) in alunos" :key="aluno">
+					<b-list-group-item @click="removerAluno(i)">{{ aluno }}</b-list-group-item>
+				</b-list-group>
+			</transition-group>
 	</div>
 </template>
 
 <script>
 import AlertaAdvertencia from './AlertaAdvertencia.vue'
-import AlertaInfo from './Alert'
+import AlertaInfo from './AlertaInfo.vue'
 export default {
 	
 	components: { AlertaAdvertencia, AlertaInfo },
 	data(){
 		return{
+			alunos: ['Roberto','Julia','Teresa','Paulo'],
 			msg: 'Uma mensagem de informaçao para o usuário!',
 			exibir: true,
 			exibir2: true,
@@ -66,6 +79,14 @@ export default {
 		}
 	},
 	methods: {
+		adicionarAluno(){
+			const s = Math.random().toString(36).substring(2)
+			this.alunos.push(s)
+
+		},
+		removerAluno(indice) {
+			this.alunos.splice(indice, 1)
+		},
 		animar(el, done, negativo){
 			let rodada = 1
 			const temporizador = setInterval(() =>{
@@ -151,6 +172,8 @@ export default {
 
 }
 .slide-leave-active{
+	position: absolute;
+	width: 100%;
 	animation: slide-out 2s ease;
 	transition: opacity 6s;
 
@@ -159,6 +182,8 @@ export default {
 	opacity: 0;
 
 }
-
+.slide-move{
+	transition: transform 1s;
+}
 
 </style>
