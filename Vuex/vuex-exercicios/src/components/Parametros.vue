@@ -17,6 +17,7 @@
 export default {
     data() {
         return {
+            servico: text,
             quantidade: 0,
             preco: 0
         }
@@ -28,5 +29,6 @@ export default {
     .parametros {
         display: flex;
         justify-content: space-around;
+        height: 145px;
     }
 </style>

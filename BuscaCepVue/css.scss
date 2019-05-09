@@ -1,0 +1,76 @@
+$colorerror: #666AAA;
+$colortext: #999EEE;
+
+body {
+  position: relative;
+  background: #f1f1f1;
+  font-family: 'Arial';
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  > * {
+    margin: 5px;
+  }
+}
+
+h2 {
+  color: $colortext;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  max-height: 8;
+  > * {
+    margin: 10px;
+  }
+}
+
+.display {
+  color: $colortext;
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+input {
+  width: 150px;
+  height: 30px;
+  border: none;
+  outline: none;
+  color: $colortext;
+  font-size: 20px;
+  text-align: center;
+  padding-left: 10px;
+  box-shadow: 0 3px 0 rgba($colorerror, 0.5);
+}
+
+.error {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.no {
+  animation: 0.5s shake infinite ease;
+}
+
+
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  0% {
+    transform: translateX(0);
+  }
+}

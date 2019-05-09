@@ -1,0 +1,91 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link href="css.css" rel="stylesheet">
+
+
+<div id="app" class="container">
+    <h2>Digite o CEP</h2>
+    <div class="form">
+        <input type="text" v-model="filme" />
+
+    </div>
+    <br>
+    <br>
+
+    <hr>
+    <p class="error">{{error}}</p>
+    <p class="display">{{dados}}</p>
+</div>
+<script src="https://unpkg.com/jquery@2.1.4/dist/jquery.min.js"> </script>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            dados: "",
+            filme: "Castle in the Sky",
+            error: ""
+        },
+        methods: {
+            getCity: function () {
+                var self = this;
+                jQuery.getJSON("https://ghibliapi.herokuapp.com/films/?" + this.filme + "/json", function (result) {
+                    if (("erro" in result)) {
+                        self.error = "TITULO NÃO ENCONTRADO";
+                        self.dados = "";
+                        jQuery(".error").addClass("no");
+                    } else {
+                        self.dados = result.title + ", " + result.director;
+                        jQuery(".display").addClass("animated fadeInDown");
+                    }
+                    console.log(result);
+                });
+            }
+        },
+        // var app = new Vue({
+        //     el: "#app",
+        //     data: {
+        //         city: "",
+        //         cep: "06413730",
+        //         error: ""
+        //     },
+        //     methods: {
+        //         getCity: function () {
+        //             var self = this;
+        //             jQuery.getJSON("https://viacep.com.br/ws/" + this.cep + "/json", function (result) {
+        //                 if (("erro" in result)) {
+        //                     self.error = "CEP não encontrado";
+        //                     self.city = "";
+        //                     jQuery(".error").addClass("no");
+        //                 } else {
+        //                     self.city = result.logradouro + ", " + result.bairro + " - " + result.localidade + "/" + result.uf + " - " +result.ibge;
+        //                     jQuery(".display").addClass("animated fadeInDown");
+        //                 }
+        //                 console.log(result);
+        //             });
+        //         }
+        //     },
+        watch: {
+            filme: function () {
+                if (this.filme.length === 8) {
+                    this.getCity();
+                    this.error = "";
+                    jQuery(".error").removeClass("no");
+                }
+                if (this.filme.length < 8) {
+                    this.dados = "";
+                    this.error = "CEP Inválido";
+                    jQuery(".error").addClass("no");
+                    jQuery(".display").removeClass("animated fadeInDown");
+                }
+            }
+        },
+        mounted: function () {
+            this.getCity();
+        }
+    })
+
+</script>
+
+<style>
+
+
+</style>
