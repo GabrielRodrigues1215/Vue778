@@ -3,17 +3,16 @@
 
 
 <div id="app" class="container">
-    <h2>Digite o CEP</h2>
+    <h2>Consulta filme por id:</h2>
     <div class="form">
-        <input type="text" v-model="filme" />
+        <input type="text" v-model="filme" @blur="getCity"/>
 
     </div>
     <br>
     <br>
-
     <hr>
-    <p class="error">{{error}}</p>
-    <p class="display">{{dados}}</p>
+    <p class="error no" v-if="dados === ''">{{error}}</p>
+    <p class="display" v-if="dados !== ''">{{dados}}</p>
 </div>
 <script src="https://unpkg.com/jquery@2.1.4/dist/jquery.min.js"> </script>
 <script>
@@ -21,24 +20,27 @@
         el: "#app",
         data: {
             dados: "",
-            filme: "Castle in the Sky",
+            filme: "",
             error: ""
         },
         methods: {
-            getCity: function () {
+            getCity: async function () {
                 var self = this;
-                jQuery.getJSON("https://ghibliapi.herokuapp.com/films/?" + this.filme + "/json", function (result) {
-                    if (("erro" in result)) {
+                
+                const response = await fetch(`https://ghibliapi.herokuapp.com/films/?id=${this.filme}`);
+                if (response.status == 200) {
+
+                const result = await response.json();
+
+                if (result.length == 1) {
+                    self.dados = result[0].title + ", " + result[0].director;
+                     } else {
                         self.error = "TITULO NÃO ENCONTRADO";
-                        self.dados = "";
-                        jQuery(".error").addClass("no");
-                    } else {
-                        self.dados = result.title + ", " + result.director;
-                        jQuery(".display").addClass("animated fadeInDown");
-                    }
-                    console.log(result);
-                });
-            }
+                    self.dados = "";
+                     }
+                }
+                
+        }
         },
         // var app = new Vue({
         //     el: "#app",
